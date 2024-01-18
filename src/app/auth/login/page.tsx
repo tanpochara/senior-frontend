@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { signIn } from "next-auth/react";
 
 const LoginPage = () => {
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -46,6 +47,10 @@ const LoginPage = () => {
       .catch((err) => {
         setError(err.message);
       });
+  };
+
+  const handleGoogleSignIn = async () => {
+    await signIn("google", { callbackUrl: "/" });
   };
 
   return (
@@ -98,6 +103,10 @@ const LoginPage = () => {
             </Button>
           </form>
         </Form>
+        <div className="w-full border-b-2 border-gray-200 dark:border-gray-700 my-4"></div>
+        <div>
+          <Button onClick={handleGoogleSignIn}>sign in with google</Button>
+        </div>
       </CardWrapper>
     </div>
   );
