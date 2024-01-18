@@ -1,4 +1,6 @@
+import { db } from "@/lib/db";
 import { LoginSchema } from "@/schema/auth";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth, { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
@@ -65,4 +67,5 @@ export const {
       return token;
     },
   },
+  adapter: PrismaAdapter(db),
 });
