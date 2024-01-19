@@ -7,7 +7,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 
-interface CardWrapperProps {
+interface Props {
   children: React.ReactNode;
   headerLabel: string;
   backButtonLabel: string;
@@ -15,27 +15,25 @@ interface CardWrapperProps {
   showSocial?: boolean;
 }
 
-export const CardWrapper = ({
+export const CardWrapper: React.FC<Props> = ({
   children,
   headerLabel,
   backButtonLabel,
   backButtonHref,
   showSocial,
-}: CardWrapperProps) => {
-  return (
-    <Card className="w-[400px] shadow-md">
-      <CardHeader>
-        <h1 className="text-2xl font-bold">{headerLabel}</h1>
-      </CardHeader>
-      <CardContent>{children}</CardContent>
-      {showSocial && (
-        <CardFooter>
-          <h2> {showSocial} </h2>
-        </CardFooter>
-      )}
+}) => (
+  <Card className="w-[400px] shadow-md">
+    <CardHeader>
+      <h1 className="text-2xl font-bold">{headerLabel}</h1>
+    </CardHeader>
+    <CardContent>{children}</CardContent>
+    {showSocial && (
       <CardFooter>
-        <a href={backButtonHref}> {backButtonLabel} </a>
+        <h2> {showSocial} </h2>
       </CardFooter>
-    </Card>
-  );
-};
+    )}
+    <CardFooter>
+      <a href={backButtonHref}> {backButtonLabel} </a>
+    </CardFooter>
+  </Card>
+);

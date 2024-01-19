@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
+import { Container } from "@/components/common/Container";
 
 const LoginPage = () => {
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -54,7 +55,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="mx-auto">
+    <Container maxW="lg" className="mt-12">
       <CardWrapper
         headerLabel="Login"
         backButtonLabel="Back"
@@ -108,7 +109,7 @@ const LoginPage = () => {
           <Button onClick={handleGoogleSignIn}>sign in with google</Button>
         </div>
       </CardWrapper>
-    </div>
+    </Container>
   );
 };
 
