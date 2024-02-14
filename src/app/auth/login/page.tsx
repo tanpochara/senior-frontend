@@ -108,6 +108,7 @@ const LoginPage = () => {
         <div>
           <Button onClick={handleGoogleSignIn}>sign in with google</Button>
         </div>
+        {error && <div className="text-red-500">{error}</div>}
       </CardWrapper>
     </Container>
   );

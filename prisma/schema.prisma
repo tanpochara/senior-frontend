@@ -1,53 +1,218 @@
-datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+generator client {
+  provider = "prisma-client-js"
 }
 
-generator client {
-    provider = "prisma-client-js"
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String? @db.Text
-    access_token      String? @db.Text
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String? @db.Text
-    session_state     String?
-
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    @@unique([provider, providerAccountId])
+  id                   String    @id @db.VarChar(255)
+  user_id              String?   @db.VarChar(255)
+  provider_type        String?   @db.VarChar(255)
+  provider_id          String?   @db.VarChar(255)
+  provider_account_id  String?   @db.VarChar(255)
+  refresh_token        String?   @db.VarChar(255)
+  access_token         String?   @db.VarChar(255)
+  access_token_expires DateTime? @db.DateTime(0)
+  created_at           DateTime? @db.DateTime(0)
+  updated_at           DateTime? @db.DateTime(0)
+  user                 user      @relation(fields: [id], references: [id], onUpdate: Restrict, map: "Account_ibfk_1")
 }
 
 model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id            String    @id @db.VarChar(255)
+  user_id       String?   @db.VarChar(255)
+  expires       DateTime? @db.DateTime(0)
+  session_token String?   @unique(map: "session_token") @db.VarChar(255)
+  access_token  String?   @db.VarChar(255)
+  updated_at    DateTime? @db.DateTime(0)
+  created_at    DateTime? @db.DateTime(0)
+  user          user      @relation(fields: [id], references: [id], onUpdate: Restrict, map: "Session_ibfk_1")
 }
 
-model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
+model category {
+  id                       Int                        @id @default(autoincrement())
+  title_th                 String                     @db.VarChar(255)
+  title_en                 String                     @db.VarChar(255)
+  color                    String                     @db.VarChar(255)
+  updated_at               DateTime?                  @db.DateTime(0)
+  created_at               DateTime                   @db.DateTime(0)
+  rec_status               Boolean
+  org_category_mapping     org_category_mapping[]
+  project_category_mapping project_category_mapping[]
 }
 
-model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
+model donation {
+  id         String    @id @db.VarChar(255)
+  amount     Float     @db.Float
+  is_anon    Boolean
+  slip_url   String    @db.VarChar(255)
+  project_id String    @db.VarChar(255)
+  user_id    String    @db.VarChar(255)
+  created_at DateTime  @db.DateTime(0)
+  updated_at DateTime? @db.DateTime(0)
+  rec_status Boolean
+  project    project   @relation(fields: [project_id], references: [id], onUpdate: Restrict, map: "donation_ibfk_1")
+  user       user      @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "donation_ibfk_2")
 
-    @@unique([identifier, token])
+  @@index([project_id], map: "project_id")
+  @@index([user_id], map: "user_id")
+}
+
+model financial_planning {
+  id          Int       @id @default(autoincrement())
+  project_id  String    @db.VarChar(255)
+  amount      Float     @db.Float
+  description String    @db.VarChar(255)
+  updated_at  DateTime? @db.DateTime(0)
+  created_at  DateTime  @db.DateTime(0)
+  rec_status  Boolean
+  project     project   @relation(fields: [project_id], references: [id], onUpdate: Restrict, map: "financial_planning_ibfk_1")
+
+  @@index([project_id], map: "project_id")
+}
+
+model galleries {
+  id         Int       @id @default(autoincrement())
+  project_id String    @db.VarChar(255)
+  image_url  String    @db.VarChar(255)
+  updated_at DateTime? @db.DateTime(0)
+  created_at DateTime  @db.DateTime(0)
+  rec_status Boolean
+  project    project   @relation(fields: [project_id], references: [id], onUpdate: Restrict, map: "galleries_ibfk_1")
+
+  @@index([project_id], map: "project_id")
+}
+
+model org_category_mapping {
+  id           Int          @id @default(autoincrement())
+  org_id       String       @db.VarChar(255)
+  cetegory_id  Int
+  updated_at   DateTime?    @db.DateTime(0)
+  created_at   DateTime     @db.DateTime(0)
+  rec_status   Boolean
+  organization organization @relation(fields: [org_id], references: [id], onUpdate: Restrict, map: "org_category_mapping_ibfk_1")
+  category     category     @relation(fields: [cetegory_id], references: [id], onUpdate: Restrict, map: "org_category_mapping_ibfk_2")
+
+  @@index([cetegory_id], map: "cetegory_id")
+  @@index([org_id], map: "org_id")
+}
+
+model org_contact {
+  id           Int            @id @default(autoincrement())
+  phone        String         @db.VarChar(255)
+  email        String         @db.VarChar(255)
+  line         String?        @db.VarChar(255)
+  facebook     String?        @db.VarChar(255)
+  website      String?        @db.VarChar(255)
+  created_at   DateTime       @db.DateTime(0)
+  updated_at   DateTime?      @db.DateTime(0)
+  rec_status   Boolean
+  organization organization[]
+}
+
+model organization {
+  id                    String                 @id @db.VarChar(255)
+  name                  String                 @db.VarChar(255)
+  slug                  String                 @db.VarChar(255)
+  short_description     String                 @db.VarChar(255)
+  verification_docs_url String                 @db.VarChar(255)
+  qr_code_path          String                 @db.VarChar(255)
+  logo_path             String                 @db.VarChar(255)
+  cover_image_path      String?                @db.VarChar(255)
+  message_from_team     String?                @db.VarChar(255)
+  donation_amount       Float
+  establish_since       DateTime               @db.Date
+  headquarters          String                 @db.VarChar(255)
+  organization_type     String?                @db.VarChar(255)
+  about                 String                 @db.VarChar(255)
+  story                 String                 @db.VarChar(255)
+  org_contact_id        Int
+  social_impact         String                 @db.VarChar(255)
+  created_at            DateTime               @db.DateTime(0)
+  updated_at            DateTime?              @db.DateTime(0)
+  rec_status            Boolean
+  org_category_mapping  org_category_mapping[]
+  org_contact           org_contact            @relation(fields: [org_contact_id], references: [id], onUpdate: Restrict, map: "organization_ibfk_1")
+  project               project?
+
+  @@index([org_contact_id], map: "org_contact_id")
+}
+
+model project {
+  id                       String                     @id @db.VarChar(255)
+  org_id                   String                     @db.VarChar(255)
+  name                     String                     @db.VarChar(255)
+  slug                     String                     @db.VarChar(255)
+  cover_image              String?                    @db.VarChar(255)
+  about                    String                     @db.VarChar(255)
+  social_impact            String                     @db.VarChar(255)
+  short_description        String                     @db.VarChar(255)
+  start_date               DateTime                   @db.Date
+  end_date                 DateTime                   @db.Date
+  target_amount            Float                      @db.Float
+  updated_at               DateTime?                  @db.DateTime(0)
+  created_at               DateTime                   @db.DateTime(0)
+  rec_status               Boolean
+  donation                 donation[]
+  financial_planning       financial_planning[]
+  galleries                galleries[]
+  organization             organization               @relation(fields: [id], references: [id], onUpdate: Restrict, map: "project_ibfk_1")
+  project_category_mapping project_category_mapping[]
+  project_milestone        project_milestone[]
+}
+
+model project_category_mapping {
+  id          Int       @id @default(autoincrement())
+  project_id  String    @db.VarChar(255)
+  category_id Int
+  updated_at  DateTime? @db.DateTime(0)
+  created_at  DateTime  @db.DateTime(0)
+  rec_status  Boolean
+  category    category  @relation(fields: [category_id], references: [id], onUpdate: Restrict, map: "project_category_mapping_ibfk_1")
+  project     project   @relation(fields: [project_id], references: [id], onUpdate: Restrict, map: "project_category_mapping_ibfk_2")
+
+  @@index([category_id], map: "category_id")
+  @@index([project_id], map: "project_id")
+}
+
+model project_milestone {
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar(255)
+  description String    @db.VarChar(255)
+  project_id  String    @db.VarChar(255)
+  created_at  DateTime  @db.DateTime(0)
+  updated_at  DateTime? @db.DateTime(0)
+  rec_status  Boolean
+  project     project   @relation(fields: [project_id], references: [id], onUpdate: Restrict, map: "project_milestone_ibfk_1")
+
+  @@index([project_id], map: "project_id")
+}
+
+model user {
+  id             String     @id @db.VarChar(255)
+  name           String     @db.VarChar(255)
+  email          String     @db.VarChar(255)
+  email_verified DateTime?  @db.DateTime(0)
+  image          String?    @db.VarChar(255)
+  date_of_birth  String     @db.VarChar(255)
+  hash_password  String     @db.VarChar(255)
+  phone          String?    @db.VarChar(255)
+  updated_at     DateTime?  @db.DateTime(0)
+  created_at     DateTime   @db.DateTime(0)
+  rec_status     Boolean
+  Account        Account?
+  Session        Session?
+  donation       donation[]
+}
+
+model verification_request {
+  id         String    @id @db.VarChar(255)
+  identifier String?   @db.VarChar(255)
+  token      String?   @db.VarChar(255)
+  expires    DateTime? @db.DateTime(0)
+  created_at DateTime? @db.DateTime(0)
+  updated_at DateTime? @db.DateTime(0)
 }
