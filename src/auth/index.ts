@@ -28,7 +28,7 @@ export const {
         }
 
         const resp = await axios.post('http://localhost:5016/auth/signin', {
-          email: credentials.email + '299',
+          email: credentials.email,
           password: credentials.password,
         
         });
@@ -48,15 +48,21 @@ export const {
   session: { strategy: "jwt" },
   jwt: {
     encode: async ({ token }) => {
-      return jwt.sign(token!, process.env.AUTH_SECRET as string, {
-        algorithm: "HS256",
-      });
+      const resp = await axios.post('http://localhost:5016/auth/token/generate', {
+        name: token?.name,
+        email: token?.email,
+        picture: token?.picture,
+        sub: token?.sub,
+      })
+      const generatedToken = resp.data.token as string;
+      return generatedToken;
     },
     decode: async ({ token }) => {
-      const decodeed = jwt.verify(token!, process.env.AUTH_SECRET as string, {
-        algorithms: ["HS256"],
-      }) as JWT;
-      return decodeed;
+      const resp = await axios.post(`http://localhost:5016/auth/token/decode`, {
+        token,
+      });
+      const decodedToken = resp.data as JWT;
+      return decodedToken;
     },
   },
   callbacks: {
