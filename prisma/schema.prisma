@@ -21,17 +21,6 @@ model Account {
   user                 user      @relation(fields: [id], references: [id], onUpdate: Restrict, map: "Account_ibfk_1")
 }
 
-model Session {
-  id            String    @id @db.VarChar(255)
-  user_id       String?   @db.VarChar(255)
-  expires       DateTime? @db.DateTime(0)
-  session_token String?   @unique(map: "session_token") @db.VarChar(255)
-  access_token  String?   @db.VarChar(255)
-  updated_at    DateTime? @db.DateTime(0)
-  created_at    DateTime? @db.DateTime(0)
-  user          user      @relation(fields: [id], references: [id], onUpdate: Restrict, map: "Session_ibfk_1")
-}
-
 model category {
   id                       Int                        @id @default(autoincrement())
   title_th                 String                     @db.VarChar(255)
@@ -39,7 +28,7 @@ model category {
   color                    String                     @db.VarChar(255)
   updated_at               DateTime?                  @db.DateTime(0)
   created_at               DateTime                   @db.DateTime(0)
-  rec_status               Boolean
+  rec_status               Int
   org_category_mapping     org_category_mapping[]
   project_category_mapping project_category_mapping[]
 }
@@ -47,13 +36,13 @@ model category {
 model donation {
   id         String    @id @db.VarChar(255)
   amount     Float     @db.Float
-  is_anon    Boolean
+  is_anon    Int
   slip_url   String    @db.VarChar(255)
   project_id String    @db.VarChar(255)
   user_id    String    @db.VarChar(255)
   created_at DateTime  @db.DateTime(0)
   updated_at DateTime? @db.DateTime(0)
-  rec_status Boolean
+  rec_status Int
   project    project   @relation(fields: [project_id], references: [id], onUpdate: Restrict, map: "donation_ibfk_1")
   user       user      @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "donation_ibfk_2")
 
@@ -68,7 +57,7 @@ model financial_planning {
   description String    @db.VarChar(255)
   updated_at  DateTime? @db.DateTime(0)
   created_at  DateTime  @db.DateTime(0)
-  rec_status  Boolean
+  rec_status  Int
   project     project   @relation(fields: [project_id], references: [id], onUpdate: Restrict, map: "financial_planning_ibfk_1")
 
   @@index([project_id], map: "project_id")
@@ -80,7 +69,7 @@ model galleries {
   image_url  String    @db.VarChar(255)
   updated_at DateTime? @db.DateTime(0)
   created_at DateTime  @db.DateTime(0)
-  rec_status Boolean
+  rec_status Int
   project    project   @relation(fields: [project_id], references: [id], onUpdate: Restrict, map: "galleries_ibfk_1")
 
   @@index([project_id], map: "project_id")
@@ -92,7 +81,7 @@ model org_category_mapping {
   cetegory_id  Int
   updated_at   DateTime?    @db.DateTime(0)
   created_at   DateTime     @db.DateTime(0)
-  rec_status   Boolean
+  rec_status   Int
   organization organization @relation(fields: [org_id], references: [id], onUpdate: Restrict, map: "org_category_mapping_ibfk_1")
   category     category     @relation(fields: [cetegory_id], references: [id], onUpdate: Restrict, map: "org_category_mapping_ibfk_2")
 
@@ -109,7 +98,7 @@ model org_contact {
   website      String?        @db.VarChar(255)
   created_at   DateTime       @db.DateTime(0)
   updated_at   DateTime?      @db.DateTime(0)
-  rec_status   Boolean
+  rec_status   Int
   organization organization[]
 }
 
@@ -133,7 +122,7 @@ model organization {
   social_impact         String                 @db.VarChar(255)
   created_at            DateTime               @db.DateTime(0)
   updated_at            DateTime?              @db.DateTime(0)
-  rec_status            Boolean
+  rec_status            Int
   org_category_mapping  org_category_mapping[]
   org_contact           org_contact            @relation(fields: [org_contact_id], references: [id], onUpdate: Restrict, map: "organization_ibfk_1")
   project               project?
@@ -155,7 +144,7 @@ model project {
   target_amount            Float                      @db.Float
   updated_at               DateTime?                  @db.DateTime(0)
   created_at               DateTime                   @db.DateTime(0)
-  rec_status               Boolean
+  rec_status               Int
   donation                 donation[]
   financial_planning       financial_planning[]
   galleries                galleries[]
@@ -170,7 +159,7 @@ model project_category_mapping {
   category_id Int
   updated_at  DateTime? @db.DateTime(0)
   created_at  DateTime  @db.DateTime(0)
-  rec_status  Boolean
+  rec_status  Int
   category    category  @relation(fields: [category_id], references: [id], onUpdate: Restrict, map: "project_category_mapping_ibfk_1")
   project     project   @relation(fields: [project_id], references: [id], onUpdate: Restrict, map: "project_category_mapping_ibfk_2")
 
@@ -185,7 +174,7 @@ model project_milestone {
   project_id  String    @db.VarChar(255)
   created_at  DateTime  @db.DateTime(0)
   updated_at  DateTime? @db.DateTime(0)
-  rec_status  Boolean
+  rec_status  Int
   project     project   @relation(fields: [project_id], references: [id], onUpdate: Restrict, map: "project_milestone_ibfk_1")
 
   @@index([project_id], map: "project_id")
@@ -196,23 +185,33 @@ model user {
   name           String     @db.VarChar(255)
   email          String     @db.VarChar(255)
   email_verified DateTime?  @db.DateTime(0)
+  role           String     @db.VarChar(255)
   image          String?    @db.VarChar(255)
   date_of_birth  String     @db.VarChar(255)
   hash_password  String     @db.VarChar(255)
   phone          String?    @db.VarChar(255)
   updated_at     DateTime?  @db.DateTime(0)
   created_at     DateTime   @db.DateTime(0)
-  rec_status     Boolean
+  rec_status     Int
   Account        Account?
-  Session        Session?
   donation       donation[]
 }
 
-model verification_request {
+model VerificationRequest {
   id         String    @id @db.VarChar(255)
   identifier String?   @db.VarChar(255)
   token      String?   @db.VarChar(255)
   expires    DateTime? @db.DateTime(0)
   created_at DateTime? @db.DateTime(0)
   updated_at DateTime? @db.DateTime(0)
+}
+
+model Session {
+  id            String    @id @db.VarChar(255)
+  user_id       String?   @db.VarChar(255)
+  expires       DateTime? @db.DateTime(0)
+  session_token String?   @unique(map: "session_token") @db.VarChar(255)
+  access_token  String?   @db.VarChar(255)
+  updated_at    DateTime? @db.DateTime(0)
+  created_at    DateTime? @db.DateTime(0)
 }

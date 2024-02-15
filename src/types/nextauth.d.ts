@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import { JWT } from "next-auth/jwt";
 
 declare module "next-auth" {
   /**
@@ -13,5 +14,20 @@ declare module "next-auth" {
       token: any;
       temp: any;
     };
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT extends Record<string, unknown>{
+    name?: string | null
+    email?: string | null
+    picture?: string | null
+    // equivalent to name
+    sub?: string
+    iat?: number
+    exp?: number
+    jti?: string
+    role?: string
+    dob?: string
   }
 }
