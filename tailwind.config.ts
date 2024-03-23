@@ -10,6 +10,9 @@ const config = {
 	],
   prefix: "",
   theme: {
+    fontFamily: {
+      'sans': ['Rubik'],
+    },
     container: {
       center: true,
       padding: "2rem",
@@ -25,12 +28,15 @@ const config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "#6CC164",
           foreground: "hsl(var(--primary-foreground))",
+          hover: "#3A7F33"
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+          purple: "#6743E6",
+          blue: "#5E8BFF",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -51,6 +57,11 @@ const config = {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        status: {
+          error: "#FF5C5C",
+          success: "#6CC164",
+          warining: "#F4CF4F",
         },
       },
       borderRadius: {
