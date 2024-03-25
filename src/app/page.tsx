@@ -9,17 +9,7 @@ export default function Home() {
   const { data } = useSession();
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {JSON.stringify(data)}
-      <a href="/auth/login"> login </a>
-      <Button onClick={() => logout()}>Logout</Button>
-      <Typography variant='h1'>Hello World</Typography>
-      <Typography variant='h2'>Hello World</Typography>
-      <Typography variant='h3'>Hello World</Typography>
-      <Typography variant='h4'>Hello World</Typography>
-      <Typography variant='h5'>Hello World</Typography>
-      <Typography variant='body1'>Hello World</Typography>
-      <Typography variant='body2'>Hello World</Typography>
-      <Typography variant='subtitle'>Hello World</Typography>
+      <Typography variant="h1">Welcome to Next.js</Typography>
     </main>
   );
 }

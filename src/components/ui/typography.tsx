@@ -2,7 +2,7 @@ import { VariantProps, cva } from "class-variance-authority";
 import React from "react";
 
 const typographyVariants = cva(
-    "font-sans",
+    "font-sans bg-transparent",
     {
         variants: {
           variant: {
