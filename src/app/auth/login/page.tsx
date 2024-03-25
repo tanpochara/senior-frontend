@@ -55,7 +55,7 @@ const LoginPage = () => {
   };
 
   return (
-    <Container maxW="lg" className="mt-12">
+    <Container maxW="lg">
       <CardWrapper
         headerLabel="Login"
         backButtonLabel="Back"

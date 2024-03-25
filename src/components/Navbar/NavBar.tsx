@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { Typography } from "../ui/typography";
 import { LanguageDropdown } from "./LanguageDropdown";
+import { AuthButtons } from "./AuthButtons";
+import { auth } from "@/auth";
 
 const NavItems = [
   {
@@ -12,15 +14,20 @@ const NavItems = [
     url: "/projects",
   },
 ];
-const NavBar: React.FC = () => {
+const NavBar: React.FC = async () => {
+  const session = await auth();
   return (
     <div className="flex flex-row item-center justify-between py-3 px-10">
       <div className="flex flex-row items-center gap-4">
-        <Image src="/logo.svg" alt="logo" width={150} height={150} />
+        <a href="/">
+          <Image src="/logo.svg" alt="logo" width={150} height={150} />
+        </a>
         {NavItems.map((item) => {
           return (
             <a key={item.title} href={item.url}>
-              <Typography variant='body1' className="font-bold">{item.title}</Typography>
+              <Typography variant="body1" className="font-bold">
+                {item.title}
+              </Typography>
             </a>
           );
         })}
@@ -28,12 +35,11 @@ const NavBar: React.FC = () => {
       <div className="flex flex-row items-center gap-4">
         <LanguageDropdown />
         <div className="h-full border-l-2" />
-        <a href="/auth/login" className="mr-3">
-            <Typography variant='body1' className="font-bold">Login</Typography>
-        </a>
-        <a href="/auth/signup" className='bg-primary py-2 px-4 rounded-3xl'>
-            <Typography variant='body1' className="text-white">Sign Up</Typography>
-        </a>
+        {session ? (
+          <h1> logged in</h1>
+        ): (
+          <AuthButtons />
+        )}
       </div>
     </div>
   );
