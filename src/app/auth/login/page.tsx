@@ -18,6 +18,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
 import { Container } from "@/components/common/Container";
+import { AuthLayout } from "@/components/layout/AuthLayout";
+import { Typography } from "@/components/ui/typography";
 
 const LoginPage = () => {
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -55,14 +57,14 @@ const LoginPage = () => {
   };
 
   return (
-    <Container maxW="lg">
+    <AuthLayout position="right">
       <CardWrapper
         headerLabel="Login"
         backButtonLabel="Back"
         backButtonHref="/"
       >
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="gap-2">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="gap-4">
             <FormField
               control={form.control}
               name="email"
@@ -102,14 +104,14 @@ const LoginPage = () => {
             <Button type="submit" disabled={isPending} className="w-full mt-4">
               submit
             </Button>
+            <Typography variant='body2' className="text-right mt-2">
+              {"Don't have an account?"}
+              <a href='/auth/signup' className="text-primary"> signup </a>
+            </Typography>
           </form>
         </Form>
-        <div className="w-full border-b-2 border-gray-200 dark:border-gray-700 my-4"></div>
-        <div>
-          <Button onClick={handleGoogleSignIn}>sign in with google</Button>
-        </div>
       </CardWrapper>
-    </Container>
+    </AuthLayout>
   );
 };
 

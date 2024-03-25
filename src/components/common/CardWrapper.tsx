@@ -22,7 +22,7 @@ export const CardWrapper: React.FC<Props> = ({
   backButtonHref,
   showSocial,
 }) => (
-  <Card className="w-[400px] shadow-md">
+  <Card className="w-[400px] border-0 shadow-none">
     <CardHeader>
       <h1 className="text-2xl font-bold">{headerLabel}</h1>
     </CardHeader>
