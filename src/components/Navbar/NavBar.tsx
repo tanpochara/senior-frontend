@@ -3,32 +3,35 @@ import { Typography } from "../ui/typography";
 import { LanguageDropdown } from "./LanguageDropdown";
 import { AuthButtons } from "./AuthButtons";
 import { auth } from "@/auth";
+import { Link } from "@/navigation";
+import { getTranslations } from "next-intl/server";
 
 const NavItems = [
   {
-    title: "Organizations",
+    title: "organization",
     url: "/organizations",
   },
   {
-    title: "Projects",
+    title: "project",
     url: "/projects",
   },
 ];
 const NavBar: React.FC = async () => {
   const session = await auth();
+  const t = await getTranslations("Navbar");
   return (
     <div className="flex flex-row item-center justify-between py-3 px-10">
       <div className="flex flex-row items-center gap-4">
-        <a href="/">
+        <Link href="/">
           <Image src="/logo.svg" alt="logo" width={150} height={150} />
-        </a>
+        </Link>
         {NavItems.map((item) => {
           return (
-            <a key={item.title} href={item.url}>
+            <Link key={item.title} href={item.url}>
               <Typography variant="body1" className="font-bold">
-                {item.title}
+                {t(item.title)}
               </Typography>
-            </a>
+            </Link>
           );
         })}
       </div>
