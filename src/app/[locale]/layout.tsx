@@ -4,6 +4,7 @@ import "../globals.css";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { NavBar } from "@/components/Navbar/NavBar";
+import { I18nProvider } from "@/provider/I18nProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,17 +15,21 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
+  params: { locale },
 }: {
   children: React.ReactNode;
+  params: { locale: string };
 }) {
   const session = await auth();
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SessionProvider session={session}>
-          <NavBar />
-          {children}
-        </SessionProvider>
+        <I18nProvider locale={locale}>
+          <SessionProvider session={session}>
+            <NavBar />
+            {children}
+          </SessionProvider>
+        </I18nProvider>
       </body>
     </html>
   );
