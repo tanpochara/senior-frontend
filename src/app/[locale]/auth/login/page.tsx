@@ -17,9 +17,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
-import { Container } from "@/components/common/Container";
 import { AuthLayout } from "@/components/layout/AuthLayout";
 import { Typography } from "@/components/ui/typography";
+import { Link } from "@/navigation";
 
 const LoginPage = () => {
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -106,7 +106,7 @@ const LoginPage = () => {
             </Button>
             <Typography variant='body2' className="text-right mt-2">
               {"Don't have an account?"}
-              <a href='/auth/signup' className="text-primary"> signup </a>
+              <Link href='/auth/signup' className="text-primary"> signup </Link>
             </Typography>
           </form>
         </Form>

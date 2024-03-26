@@ -6,6 +6,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import { Link } from "@/navigation";
 
 interface Props {
   children: React.ReactNode;
@@ -33,7 +34,7 @@ export const CardWrapper: React.FC<Props> = ({
       </CardFooter>
     )}
     <CardFooter>
-      <a href={backButtonHref}> {backButtonLabel} </a>
+      <Link href={backButtonHref}> {backButtonLabel} </Link>
     </CardFooter>
   </Card>
 );
