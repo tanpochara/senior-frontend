@@ -13,6 +13,7 @@ import { Typography } from "../ui/typography";
 import { FaAngleDown } from "react-icons/fa6";
 import Image from "next/image";
 import { usePathname, useRouter } from "@/navigation";
+import { useParams } from "next/navigation";
 
 const icons: Record<string, string> = {
   en: "/en.svg",
@@ -20,9 +21,10 @@ const icons: Record<string, string> = {
 };
 
 export const LanguageDropdown: React.FC = () => {
-  const [language, setLanguage] = useState("en");
+  const params = useParams();
   const currentPath = usePathname();
   const router = useRouter();
+  const [language, setLanguage] = useState(params.locale as string || "en");
 
   const handleLanguageChange = (value: string) => {
     setLanguage(value);
