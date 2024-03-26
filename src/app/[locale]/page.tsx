@@ -1,8 +1,4 @@
-import { logout } from "@/action/logout";
-import { Button } from "@/components/ui/button";
 import { Typography } from "@/components/ui/typography";
-import { useSession } from "next-auth/react";
-import Image from "next/image";
 import {useTranslations} from 'next-intl';
 
 export default function Home() {
