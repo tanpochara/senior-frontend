@@ -20,8 +20,10 @@ import { signIn } from "next-auth/react";
 import { AuthLayout } from "@/components/layout/AuthLayout";
 import { Typography } from "@/components/ui/typography";
 import { Link } from "@/navigation";
+import { useTranslations } from "next-intl";
 
 const LoginPage = () => {
+  const t = useTranslations("LoginPage");
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -59,8 +61,8 @@ const LoginPage = () => {
   return (
     <AuthLayout position="right">
       <CardWrapper
-        headerLabel="Login"
-        backButtonLabel="Back"
+        headerLabel={t('login')}
+        backButtonLabel={t('back')}
         backButtonHref="/"
       >
         <Form {...form}>
@@ -70,7 +72,7 @@ const LoginPage = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t('email')}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -88,7 +90,7 @@ const LoginPage = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t('password')}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -102,11 +104,11 @@ const LoginPage = () => {
               )}
             />
             <Button type="submit" disabled={isPending} className="w-full mt-4">
-              submit
+              {t('submit')}
             </Button>
             <Typography variant='body2' className="text-right mt-2">
-              {"Don't have an account?"}
-              <Link href='/auth/signup' className="text-primary"> signup </Link>
+              {t('noAccount')}
+              <Link href='/auth/signup' className="text-primary"> {t('signup')} </Link>
             </Typography>
           </form>
         </Form>

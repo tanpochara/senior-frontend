@@ -1,5 +1,20 @@
 {
     "Index": {
         "title": "Hello world!"
+    },
+    "Navbar": {
+        "organization": "organizations",
+        "project": "projects",
+        "login": "login",
+        "signup": "signup"
+    },
+    "LoginPage": {
+        "login": "Login",
+        "email": "Email",
+        "password": "Password",
+        "submit": "Submit",
+        "noAccount": "Don't have an account?",
+        "signup": "Sign up",
+        "back": "Back"
     }
 }
